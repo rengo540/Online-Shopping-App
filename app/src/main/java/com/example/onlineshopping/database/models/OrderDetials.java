@@ -1,0 +1,43 @@
+package com.example.onlineshopping.database.models;
+
+public class OrderDetials {
+
+    private int quantity;
+
+    private int totalPrice ;
+
+    Order order ;
+    Product product ;
+
+
+
+    public void calcTotalPrice (){
+        totalPrice = product.getPrice()*quantity ;
+    }
+
+
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+}
