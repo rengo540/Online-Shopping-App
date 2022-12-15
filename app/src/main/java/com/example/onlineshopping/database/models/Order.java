@@ -2,7 +2,7 @@ package com.example.onlineshopping.database.models;
 
 import java.util.List;
 
-public class Order {
+public class Order  {
 
     private int orderId ;
     private String orderDate ;

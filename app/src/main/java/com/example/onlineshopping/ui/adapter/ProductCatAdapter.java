@@ -105,8 +105,9 @@ public class ProductCatAdapter extends RecyclerView.Adapter<ProductCatAdapter.pr
 
     }
 
-
-
+    public List<OrderDetials> getOrderDetials() {
+        return orderDetials;
+    }
 
     @Override
     public int getItemCount() {

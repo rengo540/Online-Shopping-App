@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.OrderConfirm">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/OrderDetailsRecycler"
+        android:layout_width="395dp"
+        android:layout_height="495dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.051" />
+
+    <Button
+        android:id="@+id/confirmOrderBtn"
+        android:layout_width="155dp"
+        android:layout_height="72dp"
+        android:layout_marginTop="76dp"
+        android:text="confirm order"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/OrderDetailsRecycler"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/locationBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="get location"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/confirmOrderBtn"
+        app:layout_constraintHorizontal_bias="0.735"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/OrderDetailsRecycler"
+        app:layout_constraintVertical_bias="0.441" />
+
+    <TextView
+        android:id="@+id/locationTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Location : "
+        app:layout_constraintBottom_toTopOf="@+id/locationBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.045"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/OrderDetailsRecycler"
+        app:layout_constraintVertical_bias="0.491" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,7 @@
 package com.example.onlineshopping.database.models;
 
-public class OrderDetials {
+
+public class OrderDetials  {
 
     private int quantity;
 
@@ -15,7 +16,10 @@ public class OrderDetials {
         totalPrice = product.getPrice()*quantity ;
     }
 
-
+    public int getTotalPrice() {
+        calcTotalPrice();
+        return totalPrice;
+    }
 
     public int getQuantity() {
         return quantity;

@@ -8,7 +8,7 @@ import java.util.List;
 public class Cart {
 
     List<Product> productList ;
-
+List<OrderDetials> orderDetialsList;
 
     //singleton pattern
 
@@ -16,6 +16,7 @@ public class Cart {
 
     private Cart(){
         productList =new ArrayList<>();
+        orderDetialsList=new ArrayList<>();
     }
 
     public static Cart getInstance(){
@@ -35,5 +36,13 @@ public class Cart {
 
     public void setProductList(List<Product> productList) {
         this.productList = productList;
+    }
+
+    public List<OrderDetials> getOrderDetialsList() {
+        return orderDetialsList;
+    }
+
+    public void setOrderDetialsList(List<OrderDetials> orderDetialsList) {
+        this.orderDetialsList = orderDetialsList;
     }
 }

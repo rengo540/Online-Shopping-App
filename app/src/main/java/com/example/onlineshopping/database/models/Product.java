@@ -1,6 +1,7 @@
 package com.example.onlineshopping.database.models;
 
-public class Product {
+
+public class Product  {
 
 
     private int productId ;

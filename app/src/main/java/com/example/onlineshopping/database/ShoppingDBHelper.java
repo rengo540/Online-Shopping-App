@@ -305,23 +305,21 @@ public class ShoppingDBHelper extends SQLiteOpenHelper {
     }
 
 
-    public boolean insertOrder (String orderDate,int cust_id){
+    public int insertOrder (String orderDate,int cust_id){
         db = this.getWritableDatabase() ;
         ContentValues contentValues = new ContentValues();
         contentValues.put("orderDate",orderDate);
         contentValues.put("cust_id", cust_id);
-
-
-
-
         int r = (int) db.insert("Orders" ,null , contentValues);
-        if(r== -1 )
-        {
-            return  false ;
-        }
-        else {
-            return true;
-        }
+
+        db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("SELECT orderId FROM Orders ", null);
+        int orderId=-1;
+       if( res.moveToLast()){
+           orderId  = res.getInt(0);
+       }
+        return orderId;
+
     }
 
     public ArrayList<Customer> getAllCustomers () {

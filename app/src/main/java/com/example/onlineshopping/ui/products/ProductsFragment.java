@@ -70,7 +70,7 @@ public class ProductsFragment extends Fragment {
         productsRecyclerView.setAdapter(adapter);
 
         shoppingDBHelper = new ShoppingDBHelper(getContext());
-       //shoppingDBHelper.staticData();
+        //shoppingDBHelper.staticData();
 
 
         products = shoppingDBHelper.getAllProducts();
