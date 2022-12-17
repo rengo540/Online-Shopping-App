@@ -12,7 +12,13 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.onlineshopping.database.ShoppingDBHelper;
+import com.example.onlineshopping.database.models.Order;
+import com.example.onlineshopping.database.models.OrderDetials;
+import com.example.onlineshopping.database.models.Product;
+
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
@@ -29,12 +35,15 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), CustomerHome.class);
+                Intent intent = new Intent(getApplicationContext(), Login.class);
                 startActivity(intent);
             }
 
 
         });
+
+
+
 
     }
 

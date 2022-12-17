@@ -8,10 +8,19 @@ public class Order  {
     private String orderDate ;
     private int feedbackRate ;
 
+    private String feedbackmessage ;
     private String location;
 
 
     Customer customer ;
+
+    public String getFeedbackmessage() {
+        return feedbackmessage;
+    }
+
+    public void setFeedbackmessage(String feedbackmessage) {
+        this.feedbackmessage = feedbackmessage;
+    }
 
     public String getLocation() {
         return location;

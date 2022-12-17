@@ -1,6 +1,7 @@
 package com.example.onlineshopping.ui;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -14,8 +15,11 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +30,7 @@ import com.example.onlineshopping.database.models.Cart;
 import com.example.onlineshopping.database.models.CustomerLoginHolder;
 import com.example.onlineshopping.database.models.Order;
 import com.example.onlineshopping.database.models.OrderDetials;
+import com.example.onlineshopping.database.models.Product;
 import com.example.onlineshopping.ui.adapter.ProductCatAdapter;
 import com.example.onlineshopping.ui.adapter.ProductOrderAdapter;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -49,16 +54,20 @@ public class OrderConfirm extends AppCompatActivity {
     List<OrderDetials> productsOrder ;
     TextView locationTxt ;
 
+    String LocationStr ;
+
     FusedLocationProviderClient fusedLocationProviderClient;
-    Button getLocation;
+    Button getLocationBtn , confirmOrderBtn;
     private  final  static int REQUEST_CODE=100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_order_confirm);
 
-
+        shoppingDBHelper = new ShoppingDBHelper(this);
+        confirmOrderBtn =findViewById(R.id.confirmOrderBtn);
         locationTxt =findViewById(R.id.locationTxt);
         productsOrderRecyclerView = findViewById(R.id.OrderDetailsRecycler);
         adapter =new ProductOrderAdapter(this);
@@ -68,7 +77,6 @@ public class OrderConfirm extends AppCompatActivity {
         productsOrderRecyclerView.setAdapter(adapter);
 
         productsOrder = Cart.getInstance().getOrderDetialsList();
-        TextView textView = findViewById(R.id.locationTxt);
         //textView.setText(Integer.toString(productsOrder.get(0).getQuantity()));
         adapter.setList(productsOrder,listener);
 
@@ -76,36 +84,82 @@ public class OrderConfirm extends AppCompatActivity {
 
 
         fusedLocationProviderClient= LocationServices.getFusedLocationProviderClient(this);
-        getLocation = findViewById(R.id.locationBtn);
-        getLocation.setOnClickListener(new View.OnClickListener() {
+        getLocationBtn = findViewById(R.id.locationBtn);
+        getLocationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getLastLocation();
             }
         });
 
+       List<Product> products = Cart.getInstance().getProductList();
 
-        //Orders table
-    //    sqLiteDatabase.execSQL("CREATE TABLE  Orders (orderId integer PRIMARY KEY autoincrement ,orderDate TEXT,feedbackRate integer,location TEXT ,cust_id integer,FOREIGN KEY(cust_id) REFERENCES Customer (customerId))");
+        confirmOrderBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Date c = Calendar.getInstance().getTime();
+                SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+                String formattedDate = df.format(c);
+                int userId = CustomerLoginHolder.getInstance().getCustomer().getCustomerId();
+                int orderId = shoppingDBHelper.insertOrder(formattedDate,userId,LocationStr);
 
 
-        //OrderDetails
-      //  sqLiteDatabase.execSQL("CREATE TABLE  OrderDetails (order_id integer,prod_id integer,quantity integer ,FOREIGN KEY(order_id) REFERENCES Orders (orderId),FOREIGN KEY(prod_id) REFERENCES Product (productId))");
+               for(int i=0 ;i<productsOrder.size();i++){
+                   //update products no of sales
+                   int sales =productsOrder.get(i).getProduct().getNoOfSales() + productsOrder.get(i).getQuantity();
+                   productsOrder.get(i).getProduct().setNoOfSales(sales);
+                   shoppingDBHelper.updateSalesQuantity(productsOrder.get(i).getProduct().getProductId(),sales);
+                   //insert order details
+                    shoppingDBHelper.insertOrderDerials(orderId,productsOrder.get(i).getProduct().getProductId(),productsOrder.get(i).getQuantity());
+                }
+
+                AlertDialog.Builder mydialog = new AlertDialog.Builder(OrderConfirm.this);
+                LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
+
+                View myview = inflater.inflate(R.layout.feedback_dialog, null);
+                mydialog.setView(myview);
+
+                AlertDialog dialog = mydialog.create();
+                dialog.setCancelable(false);
+                dialog.show();
+
+                final EditText feedbackTxt = myview.findViewById(R.id.feedback);
+                final EditText feedbackRate = myview.findViewById(R.id.rateFeedback);
+
+                Button sendBtn = myview.findViewById(R.id.sendBtn);
+                Button cancelBtn = myview.findViewById(R.id.cancelBtn);
+
+
+                sendBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        shoppingDBHelper.updateFeedback(orderId,feedbackTxt.getText().toString(),Integer.valueOf(feedbackRate.getText().toString()));
+                        Toast.makeText(OrderConfirm.this, "thank you for your feedback", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }
+                });
+
+
+                cancelBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
+            }
+        });
+
 
       /*  shoppingDBHelper = new ShoppingDBHelper(this);
 
 
 
-        Date c = Calendar.getInstance().getTime();
-        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
-        String formattedDate = df.format(c);
-        int userId = CustomerLoginHolder.getInstance().getCustomer().getCustomerId();
-        int orderId = shoppingDBHelper.insertOrder(formattedDate,userId);
 
 
-        for(int i=0 ;i<products.size();i++){
-            shoppingDBHelper.insertOrderDerials(orderId,products.get(i).getProductId(),productsOrder.get(i).getQuantity());
-        }*/
+
+
+        */
 
 
 
@@ -125,6 +179,7 @@ public class OrderConfirm extends AppCompatActivity {
                                     addresses = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1);
                                    // latitude.setText("Lagitude :" +addresses.get(0).getLatitude());
                                    // longitude.setText("Longitude :"+addresses.get(0).getLongitude());
+                                    LocationStr = addresses.get(0).getAddressLine(0)+addresses.get(0).getLocality();
                                     locationTxt.append(addresses.get(0).getAddressLine(0)+" - "+addresses.get(0).getLocality());
                                    // city.setText("City :"+addresses.get(0).getLocality());
                                    // country.setText("Country :"+addresses.get(0).getCountryName());
