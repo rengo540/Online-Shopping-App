@@ -2,9 +2,13 @@ package com.example.onlineshopping;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,12 +17,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.onlineshopping.database.ShoppingDBHelper;
 import com.example.onlineshopping.database.models.Customer;
 import com.example.onlineshopping.database.models.CustomerLoginHolder;
+import com.google.gson.Gson;
 
 public class Login extends AppCompatActivity {
 
     TextView emailTxt , passwordTxt,loginPageQuestion ;
     Button loginBtn ;
     ShoppingDBHelper dbHelper ;
+    CheckBox checkBox ;
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +36,22 @@ public class Login extends AppCompatActivity {
         passwordTxt = findViewById(R.id.loginPassword);
         loginBtn =findViewById(R.id.loginButton);
         loginPageQuestion =findViewById(R.id.loginPageQuestion);
+        checkBox = findViewById(R.id.rememberMeCheck);
         dbHelper =new ShoppingDBHelper(this );
+
+        sharedPreferences = getSharedPreferences("checkbox",MODE_PRIVATE);
+        String checkboxx = sharedPreferences.getString("remember","");
+        if(checkboxx.equals("true")){
+            Gson gson = new Gson();
+            String json = sharedPreferences.getString("customerLogin", "");
+            Customer customerLogin = gson.fromJson(json, Customer.class);
+            CustomerLoginHolder.getInstance().setCustomer(customerLogin);
+            Intent intent = new Intent(getApplicationContext(), CustomerHome.class);
+            startActivity(intent);
+
+        }else if(checkboxx.equals("false")){
+            Toast.makeText(this, "Login please", Toast.LENGTH_SHORT).show();
+        }
 
        // dbHelper.insertCustomer("rengo","rengo","rengo","male","admin","mm/dd/yy",1,"000");
 
@@ -44,6 +66,16 @@ public class Login extends AppCompatActivity {
                              startActivity(intent);
                          }else{
                              CustomerLoginHolder.getInstance().setCustomer(user);
+                             SharedPreferences preferences = getSharedPreferences("checkbox",MODE_PRIVATE);
+                             String check =preferences.getString("remember","");
+                             if(check.equals("true")){
+                                 Gson gson = new Gson();
+                                 String json = gson.toJson(user);
+                                 SharedPreferences.Editor editor =preferences.edit();
+                                 editor.putString("customerLogin",json);
+                                 editor.apply();
+                             }
+
                              Intent intent = new Intent(getApplicationContext(), CustomerHome.class);
                              startActivity(intent);
                          }
@@ -68,6 +100,26 @@ public class Login extends AppCompatActivity {
             }
         });
 
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(compoundButton.isChecked()){
+                    SharedPreferences preferences = getSharedPreferences("checkbox",MODE_PRIVATE);
+                    SharedPreferences.Editor editor =preferences.edit();
+                    editor.putString("remember","true");
+
+                    editor.apply();
+                    Toast.makeText(Login.this, "checked", Toast.LENGTH_SHORT).show();
+
+                }else if (!compoundButton.isChecked()){
+                    SharedPreferences preferences = getSharedPreferences("checkbox",MODE_PRIVATE);
+                    SharedPreferences.Editor editor =preferences.edit();
+                    editor.putString("remember","false");
+                    editor.apply();
+                    Toast.makeText(Login.this, "Unchecked", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
     }
 }

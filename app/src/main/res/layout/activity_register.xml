@@ -69,6 +69,31 @@
         android:drawablePadding="10dp"
 
         />
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+    <Button
+        android:id="@+id/birthdayBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="birthdate"
+        android:layout_marginLeft="10dp"
+
+
+        ></Button>
+
+    <TextView
+        android:id="@+id/birthdayTxt"
+        android:layout_width="160dp"
+        android:layout_height="36dp"
+        android:layout_marginLeft="10dp"
+        android:text="dd/mm/yy"
+        android:textStyle="bold"
+
+        ></TextView>
+
+</LinearLayout>
 
     <EditText
         android:id="@+id/phoneNumber"

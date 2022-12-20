@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SearchView;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
@@ -24,6 +27,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.onlineshopping.database.ShoppingDBHelper;
+import com.example.onlineshopping.database.models.Customer;
+import com.example.onlineshopping.database.models.CustomerLoginHolder;
 import com.example.onlineshopping.database.models.Product;
 import com.example.onlineshopping.database.models.VoiceHolder;
 import com.example.onlineshopping.databinding.ActivityCustomerHomeBinding;
@@ -54,6 +59,7 @@ public class CustomerHome extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Button scanbtn;
+        TextView userName ,userBirthday ;
 
         binding = ActivityCustomerHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -66,24 +72,17 @@ public class CustomerHome extends AppCompatActivity {
 
 
 
-       /* scanbtn = findViewById(R.id.scanbtn);
-        scanbtn.setOnClickListener(v->
-        {
-            scanCode();
-        });*/
 
 
 
-
-       /* binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
+        View header = navigationView.getHeaderView(0);
+        userName =header.findViewById(R.id.userName);
+        userBirthday=header.findViewById(R.id.userBirthday);
+        Customer customer=CustomerLoginHolder.getInstance().getCustomer() ;
+        userName.setText(customer.getUserName());
+        userBirthday.setText(customer.getBirthdate());
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -100,6 +99,27 @@ public class CustomerHome extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_logout) {
+            SharedPreferences preferences = getSharedPreferences("checkbox",MODE_PRIVATE);
+            SharedPreferences.Editor editor =preferences.edit();
+            editor.putString("remember","false");
+
+            editor.apply();
+
+            Intent intent = new Intent(getApplicationContext(), Login.class);
+            startActivity(intent);
+            return true;
+        }
+
+
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -183,6 +203,8 @@ public class CustomerHome extends AppCompatActivity {
                 break;
         }
     }
+
+
 
 
 
