@@ -1,10 +1,8 @@
 package com.example.onlineshopping;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -42,6 +40,9 @@ public class Login extends AppCompatActivity {
         checkBox = findViewById(R.id.rememberMeCheck);
         dbHelper =new ShoppingDBHelper(this );
 
+
+        //dbHelper.insertCustomer("rengo","rengo","rengo","male","admin","mm/dd/yy",1,"000");
+
         sharedPreferences = getSharedPreferences("checkbox",MODE_PRIVATE);
         String checkboxx = sharedPreferences.getString("remember","");
         if(checkboxx.equals("true")){
@@ -57,6 +58,7 @@ public class Login extends AppCompatActivity {
         }
 
        // dbHelper.insertCustomer("rengo","rengo","rengo","male","admin","mm/dd/yy",1,"000");
+
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -2,12 +2,18 @@ package com.example.onlineshopping;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager2.widget.ViewPager2;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.widget.TableLayout;
+
+import com.example.onlineshopping.ui.fragments.AdminFragmentsAdapter;
+import com.google.android.material.tabs.TabLayout;
+
 import android.view.View;
 import android.widget.Toast;
 
@@ -18,45 +24,45 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
+
+
 public class AdminHome extends AppCompatActivity {
+    ViewPager2 viewPager2;
+    TabLayout tabLayout;
+    AdminFragmentsAdapter adminFragmentsAdapter;
 
-    RecyclerView recyclerView;
-
-    ShoppingDBHelper dbHelper;
-    //ArrayList<Integer> productID, productQuantity, productPrice,productSalesNumber;
-    ArrayList<String> productID, productQuantity, productPrice,productSalesNumber,productName, productBarcode,productCategory;
-    CustomAdapter customAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_home);
-
-
-        recyclerView = findViewById(R.id.recycleViewID);
-        FloatingActionButton addButton = (FloatingActionButton) findViewById(R.id.addBtn);
-        addButton.setOnClickListener(new View.OnClickListener() {
+        tabLayout = findViewById(R.id.tab_layout);
+        viewPager2 = findViewById(R.id.view_pager);
+        adminFragmentsAdapter = new AdminFragmentsAdapter(this);
+        viewPager2.setAdapter(adminFragmentsAdapter);
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(AdminHome.this, AddActivity.class);
-                startActivity(intent);
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager2.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
             }
         });
-        dbHelper = new ShoppingDBHelper(AdminHome.this);
-        productID = new ArrayList<>();
-        productName = new ArrayList<>();
-        productPrice = new ArrayList<>();
-        productQuantity = new ArrayList<>();
-        productBarcode = new ArrayList<>();
-        productSalesNumber = new ArrayList<>();
-        productCategory = new ArrayList<>();
-
-        storeDataInArrays();
-
-        customAdapter = new CustomAdapter(AdminHome.this,this,productID,productName,productPrice,
-                productQuantity,productBarcode,productSalesNumber,productCategory);
-        recyclerView.setAdapter(customAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(AdminHome.this));
+        viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                tabLayout.getTabAt(position).select();
+            }
+        });
     }
 
     @Override
@@ -67,20 +73,4 @@ public class AdminHome extends AppCompatActivity {
         }
     }
 
-    void storeDataInArrays(){
-        Cursor cursor = dbHelper.readAllData();
-        if(cursor.getCount() == 0){
-            Toast.makeText(this,"No Data", Toast.LENGTH_LONG).show();
-        }else{
-            while (cursor.moveToNext()){
-                productID.add(cursor.getString(0));
-                productName.add(cursor.getString(1));
-                productPrice.add(cursor.getString(2));
-                productQuantity.add(cursor.getString(3));
-                productBarcode.add(cursor.getString(4));
-                productSalesNumber.add(cursor.getString(5));
-                productCategory.add(cursor.getString(6));
-            }
-        }
-    }
 }

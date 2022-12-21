@@ -24,18 +24,22 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
 
 
-
+    ShoppingDBHelper dbHelper;
     TextView text_result;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Button button = findViewById(R.id.button);
-
+        dbHelper = new ShoppingDBHelper(this);
+/*        */
+        //dbHelper.getAllOrders();
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent intent = new Intent(getApplicationContext(), Login.class);
+
                 startActivity(intent);
             }
 

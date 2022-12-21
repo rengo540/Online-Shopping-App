@@ -1,8 +1,9 @@
 package com.example.onlineshopping.database.models;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Order  {
+public class Order  implements Serializable {
 
     private int orderId ;
     private String orderDate ;
@@ -60,5 +61,10 @@ public class Order  {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    @Override
+    public String toString() {
+        return "Order Date: "+orderDate+"\nLocation: "+location;
     }
 }

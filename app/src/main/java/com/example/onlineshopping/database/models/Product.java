@@ -39,6 +39,10 @@ public class Product  {
         this.stockQuantity = stockQuantity;
         this.barcode = barcode;
     }
+    public Product(String productName, int noOfSales) {
+        this.productName = productName;
+        this.noOfSales = noOfSales;
+    }
 
     public Product(){}
     public String getBarcode() {

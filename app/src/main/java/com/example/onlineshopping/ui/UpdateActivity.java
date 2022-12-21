@@ -68,13 +68,13 @@ public class UpdateActivity extends AppCompatActivity {
             barcode = getIntent().getStringExtra("barcode");
             salesNumber = getIntent().getStringExtra("salesNumber");
             category = getIntent().getStringExtra("category");
-            System.out.println("I'M ID"+id);
+/*            System.out.println("I'M ID"+id);
             System.out.println("I'M NAME"+name);
             System.out.println("I'M price"+price);
             System.out.println("I'M category"+category);
             System.out.println("I'M barcode"+barcode);
             System.out.println("I'M sales number"+salesNumber);
-            System.out.println("I'M quantity"+quantity);
+            System.out.println("I'M quantity"+quantity);*/
 
             /////
             productNameText.setText(name);

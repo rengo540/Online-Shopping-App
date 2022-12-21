@@ -626,31 +626,43 @@ public class ShoppingDBHelper extends SQLiteOpenHelper {
 
 
 
-  /*  public List<Order> getAllOrders (){
+    public List<Order> getAllOrders (){
         db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("SELECT orderId,orderDate,feedbackRate,feedbackMessage FROM Orders ",null);
+        Cursor res = db.rawQuery("SELECT orderId,orderDate,feedbackRate,feedbackMessage,location FROM Orders ",null);
         List<Order> arrayList = new ArrayList();
-        Order c=new Order() ;
         while (res.moveToNext()) {
-
+            Order c=new Order() ;
             int orderId = res.getInt(0);
             String orderDate = res.getString(1);
             int feedbackRate = res.getInt(2);
             String feedbackMessage = res.getString(3);
-
+            String location = res.getString(4);
+            System.out.println("ORDER DATE !!!!!!"+orderDate);
             c.setOrderDate(orderDate);
             c.setOrderId(orderId);
             c.setFeedbackmessage(feedbackMessage);
             c.setFeedbackRate(feedbackRate);
-
+            c.setLocation(location);
             arrayList.add( c);
         }
 
         return  arrayList;
-    }*/
+    }
 
 
-
+    public ArrayList<Product> getBestSellingProduct(){
+        db = this.getReadableDatabase();
+        ArrayList<Product>topSellingProducts = new ArrayList<>();
+       Cursor res = db.rawQuery("SELECT noOfSales,productName FROM Product ORDER BY noOfSales DESC LIMIT 3",null);
+        while (res.moveToNext()){
+            int salesNumber = res.getInt(0);
+            String name = res.getString(1);
+            Product product = new Product(name,salesNumber);
+//            System.out.println("DATA IS "+res.getString(1));
+            topSellingProducts.add(product);
+        }
+        return  topSellingProducts;
+    }
 
 
 

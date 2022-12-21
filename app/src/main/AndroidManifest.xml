@@ -25,15 +25,24 @@
                 android:value="" />
         </activity>
         <activity
+            android:name=".AdminOrdersDetails"
+            android:exported="false" />
+
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        <activity
             android:name=".ui.AddActivity"
-            android:exported="false">
+            android:exported="false"
+            android:parentActivityName=".AdminHome">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".ui.UpdateActivity"
-            android:exported="false">
+            android:exported="false"
+            android:parentActivityName=".AdminHome">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

@@ -7,26 +7,28 @@
     tools:context=".ui.cart.CartFragment">
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/productsOrderRecycler"
-        android:layout_width="408dp"
-        android:layout_height="551dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.333"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.088" />
-
     <Button
         android:id="@+id/orderBtn"
         android:layout_width="155dp"
         android:layout_height="62dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginBottom="24dp"
         android:text="order now"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/productsOrderRecycler"
+        android:layout_width="411dp"
+        android:layout_height="611dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/orderBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/productsOrderRecycler"
-        app:layout_constraintVertical_bias="0.014" />
+        app:layout_constraintTop_toTopOf="parent">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
