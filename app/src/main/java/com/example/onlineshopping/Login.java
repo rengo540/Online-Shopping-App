@@ -17,12 +17,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.onlineshopping.database.ShoppingDBHelper;
 import com.example.onlineshopping.database.models.Customer;
 import com.example.onlineshopping.database.models.CustomerLoginHolder;
+import com.example.onlineshopping.ui.ForgetPasswordActivity;
 import com.google.gson.Gson;
 
 public class Login extends AppCompatActivity {
 
     TextView emailTxt , passwordTxt,loginPageQuestion ;
     Button loginBtn ;
+    TextView forgetBtn;
     ShoppingDBHelper dbHelper ;
     CheckBox checkBox ;
     SharedPreferences sharedPreferences;
@@ -32,6 +34,7 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        forgetBtn = findViewById(R.id.forgetBtn);
         emailTxt = findViewById(R.id.loginEmail);
         passwordTxt = findViewById(R.id.loginPassword);
         loginBtn =findViewById(R.id.loginButton);
@@ -99,6 +102,16 @@ public class Login extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
+        forgetBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ForgetPasswordActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
