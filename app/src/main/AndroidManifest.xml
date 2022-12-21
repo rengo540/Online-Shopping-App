@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -17,8 +18,19 @@
         android:theme="@style/Theme.OnlineShopping"
         tools:targetApi="31">
         <activity
+            android:name=".ui.ForgetPasswordActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".AdminOrdersDetails"
             android:exported="false" />
+
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
         <activity
             android:name=".ui.AddActivity"
             android:exported="false"
