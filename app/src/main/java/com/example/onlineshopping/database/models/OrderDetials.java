@@ -10,7 +10,12 @@ public class OrderDetials  {
     Order order ;
     Product product ;
 
-
+    public OrderDetials(){}
+    public OrderDetials(int quantity, Order order, Product product) {
+        this.quantity = quantity;
+        this.order = order;
+        this.product = product;
+    }
 
     public void calcTotalPrice (){
         totalPrice = product.getPrice()*quantity ;

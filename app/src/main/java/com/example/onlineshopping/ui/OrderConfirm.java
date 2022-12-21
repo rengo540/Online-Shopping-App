@@ -105,7 +105,7 @@ public class OrderConfirm extends AppCompatActivity {
                 int orderId = shoppingDBHelper.insertOrder(formattedDate,userId,LocationStr);
 
 
-               for(int i=0 ;i<productsOrder.size();i++){
+                for(int i=0 ;i<productsOrder.size();i++){
                    //update products no of sales
                    int sales =productsOrder.get(i).getProduct().getNoOfSales() + productsOrder.get(i).getQuantity();
                    productsOrder.get(i).getProduct().setNoOfSales(sales);

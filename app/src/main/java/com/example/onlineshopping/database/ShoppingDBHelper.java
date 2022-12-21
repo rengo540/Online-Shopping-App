@@ -350,7 +350,7 @@ public class ShoppingDBHelper extends SQLiteOpenHelper {
         db = this.getReadableDatabase();
         Cursor res = db.rawQuery("SELECT orderId FROM Orders ", null);
         int orderId=-1;
-       if( res.moveToLast()){
+       while (res.moveToNext()){
            orderId  = res.getInt(0);
        }
         return orderId;
@@ -477,6 +477,11 @@ public class ShoppingDBHelper extends SQLiteOpenHelper {
 
         return  c;
     }
+
+
+
+
+
 
     public int getCategoryId (String cat_name ){
         //String catId = Integer.toString(Cat_id);
@@ -663,6 +668,30 @@ public class ShoppingDBHelper extends SQLiteOpenHelper {
         }
         return  topSellingProducts;
     }
+
+
+    public List<OrderDetials> getProductsForOrder (Order order ){
+        String orderIdd = Integer.toString(order.getOrderId());
+        String[] arg={orderIdd};
+        db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("SELECT prod_id,quantity FROM OrderDetails WHERE order_id = ? ", arg);
+        List<OrderDetials> orderDetialsList = new ArrayList<>();
+       // OrderDetials orderDetials = null;
+        Product p = new Product();
+        while (res.moveToNext()) {
+
+            int prodId = res.getInt(0);
+            int quantity = res.getInt(1);
+
+
+            p = getProduct(prodId);
+            p.setProductId(prodId);
+            orderDetialsList.add(new OrderDetials(quantity,order,p));
+        }
+
+        return  orderDetialsList;
+    }
+
 
 
 

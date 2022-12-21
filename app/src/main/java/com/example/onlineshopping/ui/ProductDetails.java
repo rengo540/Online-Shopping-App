@@ -25,7 +25,7 @@ public class ProductDetails extends AppCompatActivity {
 
          shoppingDBHelper = new ShoppingDBHelper(this);
          Product p = shoppingDBHelper.getProduct(id);
-
+         p.setProductId(id);
         TextView productTitle = findViewById(R.id.productNameDtls);
         TextView productCat = findViewById(R.id.productCatDtls);
         TextView productPrice = findViewById(R.id.productPriceDtls);
