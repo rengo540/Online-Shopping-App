@@ -49,4 +49,10 @@ public class OrderDetials  {
     public void setProduct(Product product) {
         this.product = product;
     }
+
+    @Override
+    public String toString() {
+        return "Name: "+product.getProductName()+"\n"+"Price: "+product.getPrice()+"$\n"
+                + "Quantity Ordered: "+quantity;
+    }
 }
