@@ -5,10 +5,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 import com.example.onlineshopping.database.models.Category;
 import com.example.onlineshopping.database.models.Customer;
+import com.example.onlineshopping.database.models.Order;
+import com.example.onlineshopping.database.models.OrderDetials;
 import com.example.onlineshopping.database.models.Product;
+import com.example.onlineshopping.ui.OrderConfirm;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,9 +21,12 @@ public class ShoppingDBHelper extends SQLiteOpenHelper {
 
     static  final  String DBname = "shopping.dp" ;
     SQLiteDatabase db ;
+    Context context;
+
 
     public ShoppingDBHelper(Context context) {
-        super(context, DBname, null, 4);
+        super(context, DBname, null, 5);
+        this.context=context;
     }
 
 
@@ -32,7 +39,7 @@ public class ShoppingDBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("CREATE TABLE  Customer (customerId integer PRIMARY KEY autoincrement ,Email TEXT ,userName TEXT,password TEXT,gender Text,job Text,birthdate Text,is_admin integer,phoneNumber TEXT )");
 
         //Orders table
-        sqLiteDatabase.execSQL("CREATE TABLE  Orders (orderId integer PRIMARY KEY autoincrement ,orderDate TEXT,feedbackRate integer,location TEXT ,cust_id integer,FOREIGN KEY(cust_id) REFERENCES Customer (customerId))");
+        sqLiteDatabase.execSQL("CREATE TABLE  Orders (orderId integer PRIMARY KEY autoincrement ,orderDate TEXT,feedbackRate integer,feedbackMessage TEXT,location TEXT ,cust_id integer,FOREIGN KEY(cust_id) REFERENCES Customer (customerId))");
 
         //Category table
         sqLiteDatabase.execSQL("CREATE TABLE  Category (categoryId integer PRIMARY KEY autoincrement ,categoryName TEXT )");
@@ -150,6 +157,31 @@ public class ShoppingDBHelper extends SQLiteOpenHelper {
         db.insert("Product",null,prod);
 
     }
+
+
+    public Customer getCustomer (String email){
+        String[] arg={email};
+        db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("SELECT customerId,Email,userName,password,gender,job,birthdate,is_admin,phoneNumber  FROM Customer WHERE Email like ? ", arg);
+
+        Customer c =null;
+        if (res.moveToNext()) {
+            int customerId = res.getInt(0);
+            String customerName = res.getString(1);
+            String userName = res.getString(2);
+            String password = res.getString(3);
+            String gender = res.getString(4);
+            String job = res.getString(5);
+            String birthdate = res.getString(6);
+            int isAdmin = res.getInt(7);
+            String phoneNumber = res.getString(8);
+
+            c = new Customer(customerId, customerName, userName, password, gender, job, birthdate, isAdmin, phoneNumber);
+
+        }
+        return c;
+    }
+
 
     public List<Product> getSimilarProducts(String queryy)
     {
@@ -305,11 +337,14 @@ public class ShoppingDBHelper extends SQLiteOpenHelper {
     }
 
 
-    public int insertOrder (String orderDate,int cust_id){
+    public int insertOrder (String orderDate,int cust_id,String location){
         db = this.getWritableDatabase() ;
         ContentValues contentValues = new ContentValues();
         contentValues.put("orderDate",orderDate);
         contentValues.put("cust_id", cust_id);
+        contentValues.put("location", location);
+
+
         int r = (int) db.insert("Orders" ,null , contentValues);
 
         db = this.getReadableDatabase();
@@ -321,6 +356,56 @@ public class ShoppingDBHelper extends SQLiteOpenHelper {
         return orderId;
 
     }
+
+    public int insertCategory (String CategoryName){
+        db = this.getWritableDatabase() ;
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("categoryName",CategoryName);
+        int r = (int) db.insert("Category" ,null , contentValues);
+
+        db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("SELECT categoryId FROM Category ", null);
+        int categoryId=-1;
+        if( res.moveToLast()){
+            categoryId  = res.getInt(0);
+        }
+        return categoryId;
+
+    }
+
+
+
+    public void updateFeedback(int orderId, String feedback, int feedbackRate){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        ContentValues cv1 = new ContentValues();
+        cv.put("feedbackRate",feedbackRate);
+        cv.put("feedbackMessage",feedback);
+
+        String order_id = Integer.toString(orderId);
+
+        long result = db.update("Orders", cv, "orderId=?",new String[]{order_id});
+        if(result == -1){
+            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
+        }else {
+            System.out.println("UPDATE SUCCESS !!!!!!!!!");
+            Toast.makeText(context, " Successfully!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    public void updateSalesQuantity(int productId, int sales){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("noOfSales",sales);
+
+        String prod_id = Integer.toString(productId);
+
+        long result = db.update("Product", cv, "productId=?",new String[]{prod_id});
+
+    }
+
+
 
     public ArrayList<Customer> getAllCustomers () {
 
@@ -393,6 +478,24 @@ public class ShoppingDBHelper extends SQLiteOpenHelper {
         return  c;
     }
 
+    public int getCategoryId (String cat_name ){
+        //String catId = Integer.toString(Cat_id);
+        String[] arg={cat_name};
+        db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("SELECT categoryId FROM Category WHERE categoryName like ? ", arg);
+
+     //   Category c=null ;
+        int categoryId =-1;
+    if (res.moveToNext()) {
+         categoryId = res.getInt(0);
+    }else{
+        return  -1 ;
+    }
+
+        return  categoryId;
+    }
+
+
 
     public Product getProduct(int prod_id)
     {
@@ -402,7 +505,7 @@ public class ShoppingDBHelper extends SQLiteOpenHelper {
         db = this.getReadableDatabase();
         Cursor res = db.rawQuery("SELECT productName,stockQuantity,price, barcode,cat_id,noOfSales FROM Product WHERE productId = ? ", arg);
         Product p =null;
-        while (res.moveToNext())
+        if (res.moveToNext())
         {
           //  int productId = res.getInt(0);
             String productName = res.getString(0);
@@ -433,5 +536,133 @@ public class ShoppingDBHelper extends SQLiteOpenHelper {
 
         return  arrayList;
     }
+
+
+
+
+
+
+
+
+
+
+    public void addProduct(/*int productId,*/String productName, int price, int stockQuantity, String barcode, int noOfSales, String categoryName){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        ContentValues cvCat = new ContentValues();
+
+        //cv.put(PRODUCT_ID_COLUMN,productId);
+        cv.put("productName",productName);
+        cv.put("price",price);
+        cv.put("stockQuantity",stockQuantity);
+        cv.put("barcode",barcode);
+        cv.put("noOfSales",noOfSales);
+        int cat_id= getCategoryId(categoryName);
+        if(cat_id == -1 ){
+         cat_id = insertCategory(categoryName);
+        }
+        cv.put("cat_id",cat_id);
+
+        long result = db.insert("Product",null,cv);
+        if(result ==-1 ){
+            Toast.makeText(context,"Failed",Toast.LENGTH_LONG).show();
+        }else{
+            Toast.makeText(context,"Added Successfully",Toast.LENGTH_LONG).show();
+        }
+    }
+
+
+    public Cursor readAllData(){
+        String query = "SELECT * FROM " + "Product";
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = null;
+        if(db != null){
+            cursor = db.rawQuery(query, null);
+        }
+        return cursor;
+    }
+
+
+    public void updateData(String productID, String productName, String price, String stockQuantity, String barcode, String noOfSales, String categoryName){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        ContentValues cv1 = new ContentValues();
+        cv.put("productName",productName);
+        cv.put("price",price);
+        cv.put("stockQuantity",stockQuantity);
+        cv.put("barcode",barcode);
+        cv.put("noOfSales",noOfSales);
+       // cv1.put("categoryName",categoryName);
+
+        //db.update("Category", cv1, "categoryName like ?",new String[]{categoryName});
+
+        long result = db.update("Product", cv, "productId=?",new String[]{productID});
+        db.close();
+        if(result == -1){
+            System.out.println("FAILED TO UPDATE!!!!!!!!!");
+            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
+        }else {
+            System.out.println("UPDATE SUCCESS !!!!!!!!!");
+            Toast.makeText(context, "Updated Successfully!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+   public void deleteOneProduct(String productID){
+        SQLiteDatabase db = this.getWritableDatabase();
+        long result = db.delete("Product","productId=?",new String[]{productID});
+        if(result == -1){
+            System.out.println("FAILED TO UPDATE!!!!!!!!!");
+            Toast.makeText(context, "Failed to Delete", Toast.LENGTH_SHORT).show();
+        }else {
+            System.out.println("UPDATE SUCCESS !!!!!!!!!");
+            Toast.makeText(context, "Deleted Successfully!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+
+
+
+    public List<Order> getAllOrders (){
+        db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("SELECT orderId,orderDate,feedbackRate,feedbackMessage,location FROM Orders ",null);
+        List<Order> arrayList = new ArrayList();
+        while (res.moveToNext()) {
+            Order c=new Order() ;
+            int orderId = res.getInt(0);
+            String orderDate = res.getString(1);
+            int feedbackRate = res.getInt(2);
+            String feedbackMessage = res.getString(3);
+            String location = res.getString(4);
+            System.out.println("ORDER DATE !!!!!!"+orderDate);
+            c.setOrderDate(orderDate);
+            c.setOrderId(orderId);
+            c.setFeedbackmessage(feedbackMessage);
+            c.setFeedbackRate(feedbackRate);
+            c.setLocation(location);
+            arrayList.add( c);
+        }
+
+        return  arrayList;
+    }
+
+
+    public ArrayList<Product> getBestSellingProduct(){
+        db = this.getReadableDatabase();
+        ArrayList<Product>topSellingProducts = new ArrayList<>();
+       Cursor res = db.rawQuery("SELECT noOfSales,productName FROM Product ORDER BY noOfSales DESC LIMIT 3",null);
+        while (res.moveToNext()){
+            int salesNumber = res.getInt(0);
+            String name = res.getString(1);
+            Product product = new Product(name,salesNumber);
+//            System.out.println("DATA IS "+res.getString(1));
+            topSellingProducts.add(product);
+        }
+        return  topSellingProducts;
+    }
+
 
 }

@@ -1,17 +1,27 @@
 package com.example.onlineshopping.database.models;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Order  {
+public class Order  implements Serializable {
 
     private int orderId ;
     private String orderDate ;
     private int feedbackRate ;
 
+    private String feedbackmessage ;
     private String location;
 
 
     Customer customer ;
+
+    public String getFeedbackmessage() {
+        return feedbackmessage;
+    }
+
+    public void setFeedbackmessage(String feedbackmessage) {
+        this.feedbackmessage = feedbackmessage;
+    }
 
     public String getLocation() {
         return location;
@@ -51,5 +61,10 @@ public class Order  {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    @Override
+    public String toString() {
+        return "Order Date: "+orderDate+"\nLocation: "+location;
     }
 }

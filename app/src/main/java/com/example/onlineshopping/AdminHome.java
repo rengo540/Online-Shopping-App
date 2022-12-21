@@ -1,18 +1,37 @@
 package com.example.onlineshopping;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.widget.TableLayout;
 
 import com.example.onlineshopping.ui.fragments.AdminFragmentsAdapter;
 import com.google.android.material.tabs.TabLayout;
 
+import android.view.View;
+import android.widget.Toast;
+
+import com.example.onlineshopping.database.ShoppingDBHelper;
+import com.example.onlineshopping.ui.AddActivity;
+import com.example.onlineshopping.ui.adapter.CustomAdapter;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
+
+
+
 public class AdminHome extends AppCompatActivity {
     ViewPager2 viewPager2;
     TabLayout tabLayout;
     AdminFragmentsAdapter adminFragmentsAdapter;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,4 +64,13 @@ public class AdminHome extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode ==1){
+            recreate();
+        }
+    }
+
 }

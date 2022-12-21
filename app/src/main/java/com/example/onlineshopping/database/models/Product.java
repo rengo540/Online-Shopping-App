@@ -39,7 +39,12 @@ public class Product  {
         this.stockQuantity = stockQuantity;
         this.barcode = barcode;
     }
+    public Product(String productName, int noOfSales) {
+        this.productName = productName;
+        this.noOfSales = noOfSales;
+    }
 
+    public Product(){}
     public String getBarcode() {
         return barcode;
     }
@@ -86,5 +91,13 @@ public class Product  {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public int getNoOfSales() {
+        return noOfSales;
+    }
+
+    public void setNoOfSales(int noOfSales) {
+        this.noOfSales = noOfSales;
     }
 }

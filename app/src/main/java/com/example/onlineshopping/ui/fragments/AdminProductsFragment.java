@@ -1,14 +1,27 @@
 package com.example.onlineshopping.ui.fragments;
 
+import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.example.onlineshopping.AdminHome;
 import com.example.onlineshopping.R;
+import com.example.onlineshopping.database.ShoppingDBHelper;
+import com.example.onlineshopping.ui.AddActivity;
+import com.example.onlineshopping.ui.adapter.CustomAdapter;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -55,12 +68,63 @@ public class AdminProductsFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-    }
 
+    }
+    RecyclerView recyclerView;
+
+    ShoppingDBHelper dbHelper;
+    //ArrayList<Integer> productID, productQuantity, productPrice,productSalesNumber;
+    ArrayList<String> productID, productQuantity, productPrice,productSalesNumber,productName, productBarcode,productCategory;
+    CustomAdapter customAdapter;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_admin_products, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_admin_products,container,false);
+
+        recyclerView = rootView.findViewById(R.id.recycleViewID);
+        FloatingActionButton addButton = (FloatingActionButton) rootView.findViewById(R.id.addBtn);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), AddActivity.class);
+                startActivity(intent);
+            }
+        });
+        dbHelper = new ShoppingDBHelper(getActivity());
+        productID = new ArrayList<>();
+        productName = new ArrayList<>();
+        productPrice = new ArrayList<>();
+        productQuantity = new ArrayList<>();
+        productBarcode = new ArrayList<>();
+        productSalesNumber = new ArrayList<>();
+        productCategory = new ArrayList<>();
+
+
+        storeDataInArrays();
+
+        customAdapter = new CustomAdapter(getActivity(),getActivity(),productID,productName,productPrice,
+                productQuantity,productBarcode,productSalesNumber,productCategory);
+        recyclerView.setAdapter(customAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        return rootView;/*inflater.inflate(R.layout.fragment_admin_products, container, false);*/
+    }
+
+    void storeDataInArrays(){
+        Cursor cursor = dbHelper.readAllData();
+        if(cursor.getCount() == 0){
+            Toast.makeText(getActivity(),"No Data", Toast.LENGTH_LONG).show();
+        }else{
+            while (cursor.moveToNext()){
+                productID.add(cursor.getString(0));
+                productName.add(cursor.getString(1));
+                productPrice.add(cursor.getString(2));
+                productQuantity.add(cursor.getString(3));
+                productBarcode.add(cursor.getString(4));
+                productSalesNumber.add(cursor.getString(5));
+                productCategory.add(cursor.getString(6));
+            }
+        }
     }
 }

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -84,18 +85,25 @@ public class ProductCatAdapter extends RecyclerView.Adapter<ProductCatAdapter.pr
         productVH.countUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                orderDetials.get(position).setQuantity(++count[0]);
-                productVH.productCount.setText(Integer.toString(orderDetials.get(position).getQuantity()));
-
+                if(orderDetials.get(position).getProduct().getStockQuantity() >= count[0] ) {
+                    orderDetials.get(position).setQuantity(++count[0]);
+                    productVH.productCount.setText(Integer.toString(orderDetials.get(position).getQuantity()));
+                }else{
+                    Toast.makeText(context, "no more items for this product", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         productVH.countDown.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                orderDetials.get(position).setQuantity(--count[0]);
-                productVH.productCount.setText(Integer.toString(orderDetials.get(position).getQuantity()));
+                if(1 <= count[0] ) {
 
+                    orderDetials.get(position).setQuantity(--count[0]);
+                    productVH.productCount.setText(Integer.toString(orderDetials.get(position).getQuantity()));
+                }else{
+                    Toast.makeText(context, "error", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

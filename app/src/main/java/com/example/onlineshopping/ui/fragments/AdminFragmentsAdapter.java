@@ -18,13 +18,14 @@ public class AdminFragmentsAdapter extends FragmentStateAdapter {
                 return new AdminProductsFragment();
             case 1 :
                 return  new OrdersFragment();
+            case 2 :
             default:
-                return  new AdminProductsFragment();
+                return  new ChartFragment();
         }
     }
 
     @Override
     public int getItemCount() {
-        return 2;
+        return 3;
     }
 }
