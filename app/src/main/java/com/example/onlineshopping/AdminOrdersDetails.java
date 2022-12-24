@@ -15,7 +15,7 @@ import com.example.onlineshopping.database.ShoppingDBHelper;
 import com.example.onlineshopping.database.models.Order;
 import com.example.onlineshopping.database.models.OrderDetials;
 import com.example.onlineshopping.database.models.Product;
-import com.example.onlineshopping.ui.adapter.AdminOrdersDetailsAdapter;
+//import com.example.onlineshopping.ui.adapter.AdminOrdersDetailsAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,20 +23,21 @@ import java.util.List;
 public class AdminOrdersDetails extends AppCompatActivity {
 
 
-    RecyclerView recyclerView;
+    //RecyclerView recyclerView;
     ShoppingDBHelper dbHelper;
     TextView orderDate,location,rate,feedback;
     ListView productsListView;
-    AdminOrdersDetailsAdapter ordersDetailsAdapter;
+//    AdminOrdersDetailsAdapter ordersDetailsAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_orders_details);
         dbHelper = new ShoppingDBHelper(this);
+        // get order
         Order order = (Order)getIntent().getSerializableExtra("myOrder");
         productsListView = findViewById(R.id.productDetailsListView);
         List<OrderDetials>orderDetials = dbHelper.getProductsForOrder(order);
-        List<Product> productList = new ArrayList<>();
+        //List<Product> productList = new ArrayList<>();
         ArrayAdapter arrayAdapter = new ArrayAdapter(this,
                 android.R.layout.simple_list_item_2,android.R.id.text1,orderDetials);
         productsListView.setAdapter(arrayAdapter);

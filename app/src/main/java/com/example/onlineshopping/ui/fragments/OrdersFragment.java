@@ -98,18 +98,9 @@ public class OrdersFragment extends Fragment {
         FloatingActionButton dateFAB =(FloatingActionButton) rootView.findViewById(R.id.dateFAB);
         ordersListView = rootView.findViewById(R.id.ordersListView);
         dbHelper = new ShoppingDBHelper(getActivity());
-        /*dbHelper.insertOrder("16-Dec-2022",465,"Ain Shams");
-        dbHelper.insertOrder("17-Dec-2022",4,"Cairo");
-        dbHelper.insertOrder("19-Dec-2022",5,"New Cairo");
-        dbHelper.insertOrder("18-Dec-2022",45,"Egypt");*/
 
         ordersList = new ArrayList();
         ordersList = dbHelper.getAllOrders();
-        /*System.out.println(ordersList.size());
-        System.out.println(ordersList.get(0).getLocation());
-        System.out.println(ordersList.get(1).getLocation());
-        System.out.println(ordersList.get(2).getLocation());
-        System.out.println(ordersList.get(3).getLocation());*/
 
         ArrayAdapter arrayAdapter = new ArrayAdapter(getActivity(),
                 android.R.layout.simple_list_item_1,android.R.id.text1,ordersList);
@@ -117,7 +108,7 @@ public class OrdersFragment extends Fragment {
         ordersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                System.out.println(ordersList.get(i).getLocation());
+                //System.out.println(ordersList.get(i).getLocation());
                 Intent intent = new Intent(getActivity(), AdminOrdersDetails.class);
                 intent.putExtra("myOrder",ordersList.get(i));
                 startActivity(intent);
@@ -145,16 +136,16 @@ public class OrdersFragment extends Fragment {
                 //Log.d(TAG, "onDateSet: mm/dd/yyy: " + month + "/" + day + "/" + year);
                 //String date = day + "-" + month + "-" + year;
                 Date date = new GregorianCalendar(year, month, day).getTime();
-                System.out.println(date);
+                //System.out.println(date);
                 SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
                 String formatedDate = df.format(date);
-                System.out.println(formatedDate);
+                //System.out.println(formatedDate);
                 //ordersList.stream().filter(x->x.getOrderDate()==formatedDate).collect(Collectors.toList());
                 List<Order>filteredList = new ArrayList();
                 for(Order order:ordersList){
                      if(order.getOrderDate().contains(formatedDate)){
                         filteredList.add(order);
-                        System.out.println(order.getLocation());
+                        //System.out.println(order.getLocation());
                     }
                 }
 

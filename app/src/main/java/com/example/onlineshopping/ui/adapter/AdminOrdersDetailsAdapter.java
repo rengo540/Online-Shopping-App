@@ -1,3 +1,4 @@
+/*
 package com.example.onlineshopping.ui.adapter;
 
 import android.app.Activity;
@@ -23,7 +24,9 @@ public class AdminOrdersDetailsAdapter extends RecyclerView.Adapter<AdminOrdersD
     Activity activity;
     ArrayList orderId,orderDate,location,rate,feedback;
 
-    public AdminOrdersDetailsAdapter(Context context, Activity activity, /*ArrayList orderId,*/ ArrayList orderDate,
+    public AdminOrdersDetailsAdapter(Context context, Activity activity, */
+/*ArrayList orderId,*//*
+ ArrayList orderDate,
                                      ArrayList location, ArrayList rate, ArrayList feedback) {
         this.context = context;
         this.activity = activity;
@@ -80,3 +83,4 @@ public class AdminOrdersDetailsAdapter extends RecyclerView.Adapter<AdminOrdersD
         }
     }
 }
+*/
