@@ -105,11 +105,7 @@ public class OrdersFragment extends Fragment {
 
         ordersList = new ArrayList();
         ordersList = dbHelper.getAllOrders();
-       // System.out.println(ordersList.size());
-        //System.out.println(ordersList.get(0).getLocation());
-       // System.out.println(ordersList.get(1).getLocation());
-       // System.out.println(ordersList.get(2).getLocation());
-       // System.out.println(ordersList.get(3).getLocation());
+        
 
         ArrayAdapter arrayAdapter = new ArrayAdapter(getActivity(),
                 android.R.layout.simple_list_item_1,android.R.id.text1,ordersList);

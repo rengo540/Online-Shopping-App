@@ -100,4 +100,9 @@ public class Product  {
     public void setNoOfSales(int noOfSales) {
         this.noOfSales = noOfSales;
     }
+
+    @Override
+    public String toString() {
+        return "Name: "+productName+"\n"+"Price: "+price+"$\n"+"Stock Quantity: "+stockQuantity;
+    }
 }

@@ -671,15 +671,17 @@ public class ShoppingDBHelper extends SQLiteOpenHelper {
 
 
     public List<OrderDetials> getProductsForOrder (Order order ){
+        System.out.println("INNNNNNNNNN DB ORDER ID IS ");
         String orderIdd = Integer.toString(order.getOrderId());
+        System.out.println("DB ORDER ID IS "+orderIdd);
         String[] arg={orderIdd};
         db = this.getReadableDatabase();
         Cursor res = db.rawQuery("SELECT prod_id,quantity FROM OrderDetails WHERE order_id = ? ", arg);
         List<OrderDetials> orderDetialsList = new ArrayList<>();
        // OrderDetials orderDetials = null;
-        Product p = new Product();
-        while (res.moveToNext()) {
 
+        while (res.moveToNext()) {
+            Product p = new Product();
             int prodId = res.getInt(0);
             int quantity = res.getInt(1);
 
