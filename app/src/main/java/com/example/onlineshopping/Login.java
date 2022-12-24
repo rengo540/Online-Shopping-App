@@ -91,7 +91,7 @@ public class Login extends AppCompatActivity {
                      }
 
                 }else{
-                    Toast.makeText(getApplicationContext(),"wrong email",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"email not found",Toast.LENGTH_SHORT).show();
                 }
             }
         });

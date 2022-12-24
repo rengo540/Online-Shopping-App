@@ -144,15 +144,7 @@ public class CustomerHome extends AppCompatActivity {
 
         if(result.getContents()!=null)
         {
-           /* AlertDialog.Builder builder = new AlertDialog.Builder(CustomerHome.this);
-            builder.setTitle("Result");
-            builder.setMessage(result.getContents());
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.dismiss();
-                }
-            }).show();*/
+
 
             ProductsFragment.changeScanList(result.getContents());
 
@@ -184,19 +176,7 @@ public class CustomerHome extends AppCompatActivity {
             case 10:
                 if (resultCode == RESULT_OK && data != null) {
                     ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                   /* adapter =new ProductsAdapter(this);
-                    RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
 
-                    productsRecyclerView.setLayoutManager( mLayoutManager);
-                    productsRecyclerView.setAdapter(adapter);
-
-                    shoppingDBHelper = new ShoppingDBHelper(this);
-                    //shoppingDBHelper.staticData();
-
-
-                    products = shoppingDBHelper.getSimilarProducts(result.get(0));
-                    adapter.setList(products,listener);
-                    adapter.notifyDataSetChanged();*/
                     VoiceHolder.VoiceQuery = result.get(0);
                     ProductsFragment.changeVoiceList();
                 }

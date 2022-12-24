@@ -64,10 +64,13 @@ public class ProductsFragment extends Fragment {
 
         productsRecyclerView = root.findViewById(R.id.ProductRecycleView);
         adapter =new ProductsAdapter(getContext());
+        //shape of recycler
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
-
         productsRecyclerView.setLayoutManager( mLayoutManager);
+
         productsRecyclerView.setAdapter(adapter);
+
+
 
         shoppingDBHelper = new ShoppingDBHelper(getContext());
         //shoppingDBHelper.staticData();
@@ -96,9 +99,7 @@ public class ProductsFragment extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-                /*products1 = shoppingDBHelper.getSimilarProducts(s);
-                adapter.setList(products1,listener);
-                adapter.notifyDataSetChanged();*/
+
 
                 return false;
             }
@@ -126,7 +127,6 @@ public class ProductsFragment extends Fragment {
      if(!voice.isEmpty()){
          products = shoppingDBHelper.getSimilarProducts(voice);
          adapter.setList(products,listener);
-         adapter.notifyDataSetChanged();
      }
  }
 
@@ -134,7 +134,6 @@ public class ProductsFragment extends Fragment {
 
      products = shoppingDBHelper.getSimilarBarcodeProducts(barcode);
      adapter.setList(products,listener);
-     adapter.notifyDataSetChanged();
  }
 
 
