@@ -48,6 +48,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+      List<Product> list =  dbHelper.getAllProducts();
+     System.out.println( list.get(0).getProductName());
+     System.out.println( list.get(0).getNoOfSales() );
+
     }
 
 }

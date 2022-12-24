@@ -77,30 +77,6 @@ public class ProductsFragment extends Fragment {
         adapter.setList(products,listener);
 
 
-        searchView =root.findViewById(R.id.searchView);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                /*products1 = shoppingDBHelper.getSimilarProducts(s);
-                adapter.setList(products1,listener);
-                adapter.notifyDataSetChanged();*/
-
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                if(s.isEmpty()){
-                    adapter.setList(products,listener);
-                    adapter.notifyDataSetChanged();
-                }else{
-                    products = shoppingDBHelper.getSimilarProducts(s);
-                    adapter.setList(products,listener);
-                    adapter.notifyDataSetChanged();
-                }
-                return false;
-            }
-        });
 
 
 
@@ -115,6 +91,31 @@ public class ProductsFragment extends Fragment {
 
             }
         };
+
+        searchView =root.findViewById(R.id.searchView);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                /*products1 = shoppingDBHelper.getSimilarProducts(s);
+                adapter.setList(products1,listener);
+                adapter.notifyDataSetChanged();*/
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                if(s.isEmpty()){
+                    products = shoppingDBHelper.getAllProducts();
+                }else{
+                    products = shoppingDBHelper.getSimilarProducts(s);
+
+                }
+                adapter.setList(products,listener);
+                return false;
+            }
+        });
+
 
 
         return root;

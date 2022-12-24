@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.onlineshopping.R;
 import com.example.onlineshopping.database.ShoppingDBHelper;
@@ -41,6 +42,7 @@ public class ProductDetails extends AppCompatActivity {
             public void onClick(View view) {
               Cart c =  Cart.getInstance();
               c.addProduct(p);
+                Toast.makeText(ProductDetails.this, "Added to cart", Toast.LENGTH_SHORT).show();
             }
         });
 

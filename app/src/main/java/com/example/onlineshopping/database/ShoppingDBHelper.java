@@ -25,7 +25,7 @@ public class ShoppingDBHelper extends SQLiteOpenHelper {
 
 
     public ShoppingDBHelper(Context context) {
-        super(context, DBname, null, 5);
+        super(context, DBname, null, 6);
         this.context=context;
     }
 
