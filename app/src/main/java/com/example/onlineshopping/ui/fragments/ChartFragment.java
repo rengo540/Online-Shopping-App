@@ -81,12 +81,14 @@ public class ChartFragment extends Fragment {
         BarChart barChart = rootView.findViewById(R.id.barchart);
         dbHelper = new ShoppingDBHelper(getActivity());
         topSellingProducts = dbHelper.getBestSellingProduct();
+        System.out.println(topSellingProducts.get(0).getProductName());
+        System.out.println(topSellingProducts.get(1).getProductName());
         barArrayList = new ArrayList();
         ArrayList <String>lables = new ArrayList();
         float fNumber = 2f;
         for(Product product : topSellingProducts){
-            barArrayList.add(new BarEntry(fNumber,product.getNoOfSales()));
-            lables.add(product.getProductName());
+            barArrayList.add(0,new BarEntry(fNumber,product.getNoOfSales()));
+            lables.add(0,product.getProductName());
             fNumber=fNumber+2f;
             System.out.println("Product is : "+product.getProductName());
             System.out.println("labels is : "+lables.size());

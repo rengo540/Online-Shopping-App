@@ -32,7 +32,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.produc
         notifyDataSetChanged();
     }
 
-
+//View Holder
     class productVH extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView productTitle ;
         TextView productPrice ;
@@ -74,12 +74,6 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.produc
         productVH.productPrice.setText(Integer.toString( products.get(position).getPrice()));
         productVH.productCategory.setText(products.get(position).getCategory().getCategoryName());
 
-        // Picasso.Builder builder = new Picasso.Builder(context);
-      //  builder.downloader(new OkHttp3Downloader(context));
-      /*  builder.build().load(ApiClient.getInstance().getImgUrl() + movies.get(position).getPosterPath())
-                .placeholder((R.drawable.ic_launcher_background))
-                .error(R.drawable.ic_launcher_background)
-                .into(movieVH.movieImg);*/
 
     }
 

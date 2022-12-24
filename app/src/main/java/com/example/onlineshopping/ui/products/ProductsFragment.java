@@ -64,10 +64,13 @@ public class ProductsFragment extends Fragment {
 
         productsRecyclerView = root.findViewById(R.id.ProductRecycleView);
         adapter =new ProductsAdapter(getContext());
+        //shape of recycler
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
-
         productsRecyclerView.setLayoutManager( mLayoutManager);
+
         productsRecyclerView.setAdapter(adapter);
+
+
 
         shoppingDBHelper = new ShoppingDBHelper(getContext());
         //shoppingDBHelper.staticData();
@@ -77,30 +80,6 @@ public class ProductsFragment extends Fragment {
         adapter.setList(products,listener);
 
 
-        searchView =root.findViewById(R.id.searchView);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                /*products1 = shoppingDBHelper.getSimilarProducts(s);
-                adapter.setList(products1,listener);
-                adapter.notifyDataSetChanged();*/
-
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                if(s.isEmpty()){
-                    adapter.setList(products,listener);
-                    adapter.notifyDataSetChanged();
-                }else{
-                    products = shoppingDBHelper.getSimilarProducts(s);
-                    adapter.setList(products,listener);
-                    adapter.notifyDataSetChanged();
-                }
-                return false;
-            }
-        });
 
 
 
@@ -116,6 +95,29 @@ public class ProductsFragment extends Fragment {
             }
         };
 
+        searchView =root.findViewById(R.id.searchView);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                if(s.isEmpty()){
+                    products = shoppingDBHelper.getAllProducts();
+                }else{
+                    products = shoppingDBHelper.getSimilarProducts(s);
+
+                }
+                adapter.setList(products,listener);
+                return false;
+            }
+        });
+
+
 
         return root;
     }
@@ -125,7 +127,6 @@ public class ProductsFragment extends Fragment {
      if(!voice.isEmpty()){
          products = shoppingDBHelper.getSimilarProducts(voice);
          adapter.setList(products,listener);
-         adapter.notifyDataSetChanged();
      }
  }
 
@@ -133,7 +134,6 @@ public class ProductsFragment extends Fragment {
 
      products = shoppingDBHelper.getSimilarBarcodeProducts(barcode);
      adapter.setList(products,listener);
-     adapter.notifyDataSetChanged();
  }
 
 
